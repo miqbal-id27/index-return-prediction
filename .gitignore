@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+
+# raw/private data
+data/raw/*
+!data/raw/.gitkeep
+
+# generated outputs
+outputs/*
+!outputs/README.md
+models/*
+!models/README.md
+
+# local notebook exports
+*.log
