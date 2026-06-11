@@ -7,21 +7,15 @@
   <img src="https://img.shields.io/badge/Status-Portfolio%20Project-orange" alt="Status">
 </p>
 
-Compact portfolio repository for predicting whether US stocks outperform an index and estimating monthly excess return from historical price, volume, company profile, and optional macroeconomic features.
-
-<p align="center">
-  <a href="./docs/index.html"><b>Portfolio page</b></a> ·
-  <a href="./docs/notebooks/01_index_return_prediction.html"><b>Notebook HTML</b></a> ·
-  <a href="./notebooks/01_index_return_prediction.ipynb"><b>Source notebook</b></a>
-</p>
+Predicting whether US stocks outperform an index and estimating monthly excess return from historical price, volume, company profile, and optional macroeconomic features.
 
 ---
 
 ## Executive Summary
 
-This project demonstrates an end-to-end financial machine learning workflow: data loading, data validation, exploratory analysis, feature engineering, classification, regression, and July 2023 inference preparation. The classification task predicts whether a stock will outperform the index, while the regression task estimates excess return. The workflow compares simple linear models against tree-based methods and uses time-aware validation for return forecasting to reduce look-ahead bias.
+This project demonstrates an end-to-end financial machine learning workflow: data loading, data validation, exploratory analysis, feature engineering, classification, regression, and inference preparation. The classification task predicts whether a stock will outperform the index, while the regression task estimates excess return. The workflow compares simple linear models against tree-based methods and uses time-aware validation for return forecasting to reduce look-ahead bias.
 
-The strongest notebook results show **Random Forest classification F1 around 0.89** and **tree-based regression RMSE around 0.033–0.034**, with Lasso/Ridge used as interpretable baselines. The repository keeps the original notebook, adds a concise static portfolio page, and provides reusable pipeline code for re-running the workflow when the raw CSV files are available.
+The strongest results show **Random Forest classification F1 around 0.89** and **tree-based regression RMSE around 0.033–0.034**, with Lasso/Ridge used as interpretable baselines. 
 
 ---
 
@@ -29,9 +23,9 @@ The strongest notebook results show **Random Forest classification F1 around 0.8
 
 ```mermaid
 flowchart LR
-    A[Raw CSV data<br/>stock + company + index + macro] --> B[Data validation<br/>schema, regex, missing values]
-    B --> C[EDA<br/>price, volume, outliers, correlations]
-    C --> D[Feature engineering<br/>scaling, encoding, lag features]
+    A[Raw CSV data<br/>stock + company + index] --> B[Data validation<br/>schema, regex, cleaning]
+    B --> C[EDA<br/>ditribution, outliers, correlations]
+    C --> D[Feature engineering<br/>lag features, scale, encode]
     D --> E[Classification<br/>outperform vs underperform]
     D --> F[Regression<br/>monthly excess return]
     E --> G[Model comparison<br/>F1 score]
@@ -55,13 +49,13 @@ flowchart LR
 
 ## Main Results from Notebook
 
-| Task | Best / Highlight Model | Metric | Notebook Result |
+| Task | Best / Highlight Model | Metric | Result |
 |---|---:|---:|---:|
 | Classification | Random Forest | F1 score | ~0.893–0.898 |
 | Classification baseline | Logistic Regression | F1 score | ~0.655, full model ~0.810 |
 | Regression | Random Forest Regressor | CV RMSE | ~0.0334 |
 | Regression | Gradient Boosting Regressor | CV RMSE | ~0.0343 |
-| Regression baseline | Lasso / Ridge | RMSE / CV RMSE | ~0.0316–0.0403 depending setup |
+| Regression baseline | Lasso / Ridge | RMSE / CV RMSE | ~0.0316–0.0403 |
 
 > Note: this is a learning/portfolio project, not an investment recommendation system.
 
@@ -79,28 +73,12 @@ index-return-prediction-portfolio/
 ├── notebooks/
 │   └── 01_index_return_prediction.ipynb
 ├── src/
-│   └── index_return_pipeline.py
-├── docs/
-│   ├── index.html
-│   ├── project-process.md
-│   ├── data-dictionary.md
-│   ├── notebooks/
-│   │   └── 01_index_return_prediction.html
-│   └── assets/
-│       ├── candlestick_example.png
-│       ├── outlier_overview.png
-│       └── correlation_heatmap.png
-├── data/
-│   └── README.md
-├── models/
-└── outputs/
+    └── index_return_pipeline.py
 ```
 
 ---
 
 ## Dataset Inputs
-
-Expected raw files in `data/raw/`:
 
 ```text
 company_info.csv
@@ -108,12 +86,12 @@ index.csv
 stock_data.csv
 training_targets.csv
 testing_targets.csv
-fed funds rate.csv                  # optional
-fed inflation rate.csv              # optional
-fed unemployment rate.csv           # optional
-us 5 year treasury.csv              # optional
-us 10 year treasury.csv             # optional
-vix index.csv                       # optional
+fed funds rate.csv                  
+fed inflation rate.csv              
+fed unemployment rate.csv           
+us 5 year treasury.csv              
+us 10 year treasury.csv             
+vix index.csv                       
 ```
 
 ---
@@ -134,30 +112,17 @@ Run the notebook:
 jupyter lab notebooks/01_index_return_prediction.ipynb
 ```
 
-Run the reusable pipeline after placing CSVs in `data/raw/`:
+Run the pipeline after load CSVs:
 
 ```bash
 python src/index_return_pipeline.py --data-dir data/raw --output-dir outputs
-```
-
-Serve the portfolio page locally:
-
-```bash
-cd docs
-python -m http.server 8000
-```
-
-Open:
-
-```text
-http://localhost:8000
 ```
 
 ---
 
 ## Tech Stack
 
-Python · pandas · NumPy · scikit-learn · matplotlib · seaborn · mplfinance · Jupyter · GitHub Pages
+Python · pandas · NumPy · scikit-learn · matplotlib · seaborn · mplfinance 
 
 ---
 
